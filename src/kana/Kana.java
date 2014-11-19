@@ -21,7 +21,7 @@ public class Kana extends JFrame implements ActionListener {
 		setSize(430,400);
 		setResizable(false);
 		
-		// p‰‰valikon komponentit
+		// p‰‰valikon komponentit .. push l‰pp‰rilt‰
 		JTextArea guideText = new JTextArea("Valitse merkit joita tahdot opiskella. "
 				+ "Voit muuttaa valintojasi myˆhemmin\npalaamalla p‰‰valikkoon.");
 		guideText.setOpaque(false);
