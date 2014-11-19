@@ -1,4 +1,4 @@
 kana
 ====
 
-Kana Quiz Java
+Kana Quiz Java. For testing purposes.
