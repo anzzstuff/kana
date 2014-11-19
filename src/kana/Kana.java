@@ -21,9 +21,9 @@ public class Kana extends JFrame implements ActionListener {
 		setSize(430,400);
 		setResizable(false);
 		
-		// p‰‰valikon komponentit .. push l‰pp‰rilt‰
+		// p√§√§valikon komponentit
 		JTextArea guideText = new JTextArea("Valitse merkit joita tahdot opiskella. "
-				+ "Voit muuttaa valintojasi myˆhemmin\npalaamalla p‰‰valikkoon.");
+				+ "Voit muuttaa valintojasi my√∂hemmin\npalaamalla p√§√§valikkoon.");
 		guideText.setOpaque(false);
 		guideText.setEditable(false);
 
@@ -35,8 +35,8 @@ public class Kana extends JFrame implements ActionListener {
 		menuPane.add(guideText, BorderLayout.NORTH);
 		menuPane.add(startBtn, BorderLayout.SOUTH);
 		
-		// pelin‰kym‰n komponentit
-		menuBtn = new JButton("< Takaisin p‰‰valikkoon  ");
+		// pelin√§kym√§n komponentit
+		menuBtn = new JButton("< Takaisin p√§√§valikkoon  ");
 		menuBtn.addActionListener(this);
 		
 		gamePane = new JPanel();
@@ -75,13 +75,13 @@ public class Kana extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == startBtn) {
-			// siirryt‰‰n pelin‰kym‰‰n
+			// siirryt√§√§n pelin√§kym√§√§n
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "GAME");
 			startGame();
 		}
 		if(e.getSource() == menuBtn) {
-			// siirryt‰‰n p‰‰valikkoon
+			// siirryt√§√§n p√§√§valikkoon
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "MENU");
 		}
