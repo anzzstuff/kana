@@ -3,6 +3,7 @@ package kana;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -22,8 +23,9 @@ public class Kana extends JFrame implements ActionListener {
 		setResizable(false);
 		
 		// päävalikon komponentit
-		JTextArea guideText = new JTextArea("Valitse merkit joitあ tahdot opiskella. "
+		JTextArea guideText = new JTextArea("Valitse merkit joita tahdot opiskella. "
 				+ "Voit muuttaa valintojasi myöhemmin\npalaamalla päävalikkoon.");
+
 		guideText.setOpaque(false);
 		guideText.setEditable(false);
 
@@ -61,11 +63,34 @@ public class Kana extends JFrame implements ActionListener {
 	
 	
 	public void startGame() {
+		int from=0;
+		int to=4;
+		Random rnd = new Random();
+		ArrayList<Character> list = new ArrayList<Character>();
+		
+		//Character[] characters = new Character[5];
+		
+		String[] kanaArray = {
+			"あ","い","う","え","お"	
+		};
+		String[] romajiArray = {
+			"a","i","u","e","o"
+		};
+		
+		for(int i=0;i<kanaArray.length;i++) {
+			list.add(new Character(kanaArray[i], romajiArray[i], 1));
+			//characters[i] = new Character(kanaArray[i], romajiArray[i], 1);
+			//System.out.println(romajiArray[i]);
+		}
 		// Aloitetaan uusi peli valituilla asetuksilla
+/*		for(int i=0;i<characters.length;i++) {
+			System.out.println(characters[i].getKana());
+		}*/
+		System.out.println(list.size());
+		Collections.shuffle(list);
+		
 		gamePane.removeAll();
-		
 		gamePane.add(menuBtn);	
-		
 		
 		// TODO: removable?
 		gamePane.revalidate();
