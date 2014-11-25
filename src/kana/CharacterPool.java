@@ -12,7 +12,7 @@ public class CharacterPool {
 	}
 	
 	public void addToPool(Character par_thisChar) {
-		System.out.println("Adding "+par_thisChar.getKana() + " " +par_thisChar.getIndex() +"...");
+		//System.out.println("Adding "+par_thisChar.getKana() + " " +par_thisChar.getIndex() +"...");
 
 		fullPool.add(par_thisChar);
 	}

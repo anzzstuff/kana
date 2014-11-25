@@ -8,8 +8,8 @@ import java.util.*;
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JFrame mainFrame;
-	JPanel masterPane;
-	JPanel gamePane;
+	public JPanel masterPane;
+	public JPanel gamePane;
 	JPanel menuPane;
 	JButton startBtn;
 	JButton menuBtn;
@@ -158,8 +158,9 @@ public class Kana extends JFrame implements ActionListener {
 			if(anySelected) {
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
+				gamePane.add(menuBtn);	
 
-				Game peli = new Game(selectedArray);
+				new Game(selectedArray);
 			}
 			else
 				JOptionPane.showMessageDialog(mainFrame, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
@@ -170,14 +171,12 @@ public class Kana extends JFrame implements ActionListener {
 			cardLayout.show(masterPane, "MENU");
 		}
 		if(e.getSource() == checkAllBtn) {
-			for(int i=0;i<charChoices.length;i++) {
+			for(int i=0;i<charChoices.length;i++)
 				charChoices[i].setSelected(true);
-			}
 		}
 		if(e.getSource() == checkNoneBtn) {
-			for(int i=0;i<charChoices.length;i++) {
+			for(int i=0;i<charChoices.length;i++)
 				charChoices[i].setSelected(false);
-			}
 		}
 		
 		//JOptionPane.showMessageDialog(mainFrame, "action performed");
