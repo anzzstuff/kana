@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
+//muutoksii tänne
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JFrame mainFrame;
