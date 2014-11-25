@@ -3,11 +3,13 @@ package kana;
 public class Character {
 	private String kana;
 	private String romaji;
+	private int index;
 	private int mistakes;
 	
-	public Character(String par_kana, String par_romaji, int par_mistakes) {
+	public Character(String par_kana, String par_romaji, int par_index, int par_mistakes) {
 		setKana(par_kana);
 		setRomaji(par_romaji);
+		setIndex(par_index);
 		setMistakes(par_mistakes);
 	}
 
@@ -25,6 +27,14 @@ public class Character {
 
 	public void setRomaji(String par_romaji) {
 		this.romaji = par_romaji;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 	public int getMistakes() {
