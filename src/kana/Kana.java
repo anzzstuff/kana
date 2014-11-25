@@ -3,6 +3,7 @@ package kana;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -20,10 +21,9 @@ public class Kana extends JFrame implements ActionListener {
 		
 		setSize(430,400);
 		setResizable(false);
-		
-		// p‰‰valikon komponentit .. push l‰pp‰rilt‰
+		// p√§√§valikon komponentit .. push l√§pp√§rilt√§
 		JTextArea guideText = new JTextArea("Valitse merkit joita tahdot opiskella. "
-				+ "Voit muuttaa valintojasi myˆhemmin\npalaamalla p‰‰valikkoon.");
+				+  "Voit muuttaa valintojasi my√∂hemmin\npalaamalla p√§√§valikkoon.");
 		guideText.setOpaque(false);
 		guideText.setEditable(false);
 
@@ -35,8 +35,8 @@ public class Kana extends JFrame implements ActionListener {
 		menuPane.add(guideText, BorderLayout.NORTH);
 		menuPane.add(startBtn, BorderLayout.SOUTH);
 		
-		// pelin‰kym‰n komponentit
-		menuBtn = new JButton("< Takaisin p‰‰valikkoon  ");
+		// pelin√§kym√§n komponentit
+		menuBtn = new JButton("< Takaisin p√§√§valikkoon  ");
 		menuBtn.addActionListener(this);
 		
 		gamePane = new JPanel();
@@ -61,11 +61,34 @@ public class Kana extends JFrame implements ActionListener {
 	
 	
 	public void startGame() {
+		int from=0;
+		int to=4;
+		Random rnd = new Random();
+		ArrayList<Character> list = new ArrayList<Character>();
+		
+		//Character[] characters = new Character[5];
+		
+		String[] kanaArray = {
+			"„ÅÇ","„ÅÑ","„ÅÜ","„Åà","„Åä"	
+		};
+		String[] romajiArray = {
+			"a","i","u","e","o"
+		};
+		
+		for(int i=0;i<kanaArray.length;i++) {
+			list.add(new Character(kanaArray[i], romajiArray[i], 1));
+			//characters[i] = new Character(kanaArray[i], romajiArray[i], 1);
+			//System.out.println(romajiArray[i]);
+		}
 		// Aloitetaan uusi peli valituilla asetuksilla
+/*		for(int i=0;i<characters.length;i++) {
+			System.out.println(characters[i].getKana());
+		}*/
+		System.out.println(list.size());
+		Collections.shuffle(list);
+		
 		gamePane.removeAll();
-		
 		gamePane.add(menuBtn);	
-		
 		
 		// TODO: removable?
 		gamePane.revalidate();
@@ -75,13 +98,13 @@ public class Kana extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == startBtn) {
-			// siirryt‰‰n pelin‰kym‰‰n
+			// siirryt√§√§n pelin√§kym√§√§n
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "GAME");
 			startGame();
 		}
 		if(e.getSource() == menuBtn) {
-			// siirryt‰‰n p‰‰valikkoon
+			// siirryt√§√§n p√§√§valikkoon
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "MENU");
 		}
