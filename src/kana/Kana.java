@@ -8,25 +8,24 @@ import javax.swing.text.*;
 
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	JFrame mainFrame;
+	private JFrame mainFrame;
 	// CardLayout paneelit
-	public JPanel masterPane;
-	public JPanel gamePane;
+	private JPanel masterPane;
+	private JPanel gamePane;
 	// Päävalikon komponentit
-	JPanel menuPane;
-	JButton startBtn;
-	JButton checkAllBtn;
-	JButton checkNoneBtn;
+	private JPanel menuPane;
+	private JButton startBtn;
+	private JButton checkAllBtn;
+	private JButton checkNoneBtn;
 	// Pelinäkymän komponentit
-	JTextPane previousResultText;
-	JTextPane currentQuestionText;
-	JButton optionBtn1;
-	JButton optionBtn2;
-	JButton optionBtn3;
-	JButton optionBtn4;
-	JButton menuBtn;
+	private JTextPane previousResultText;
+	private JTextPane currentQuestionText;
+	private JButton[] optionBtn = new JButton[4];
+	private JButton menuBtn;
 	
-	public ArrayList<Character> allCharsList;
+	private Character currentQuestion;
+	private Game peli;
+	private ArrayList<Character> allCharsList;
 	private JCheckBox[] charChoices = new JCheckBox[10];
 	
 	public Kana() {
@@ -38,6 +37,7 @@ public class Kana extends JFrame implements ActionListener {
 
 		allCharsList = new ArrayList<Character>();
 		initializeCharacters(); // Luodaan Character oliot
+		peli = new Game(allCharsList);
 		
 		// Päävalikon komponentit
 		JTextPane guideText = new JTextPane();
@@ -99,7 +99,6 @@ public class Kana extends JFrame implements ActionListener {
 		previousResultText = new JTextPane();
 		previousResultText.setText(" ");
 		previousResultText.setEditable(false);
-		//previousResultText.setBackground(new Color(0,100,0));
 		previousResultText.setBackground(Color.WHITE);
 		previousResultText.setForeground(Color.WHITE);
 		previousResultText.setMargin(new Insets(10,10,10,10));
@@ -124,14 +123,11 @@ public class Kana extends JFrame implements ActionListener {
 		JPanel answerPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 30));
 		answerPane.setOpaque(false);
 
-		optionBtn1 = new JButton("yy");
-		optionBtn2 = new JButton("ka");
-		optionBtn3 = new JButton("ko");
-		optionBtn4 = new JButton("ne");
-		answerPane.add(optionBtn1);
-		answerPane.add(optionBtn2);
-		answerPane.add(optionBtn3);
-		answerPane.add(optionBtn4);
+		for(int i=0;i<4;i++) {
+			optionBtn[i] = new JButton("x");
+			answerPane.add(optionBtn[i]);
+			optionBtn[i].addActionListener(this);
+		}
 
 		questionPaneOuter.add(questionPane, BorderLayout.NORTH);
 		questionPaneOuter.add(answerPane, BorderLayout.CENTER);
@@ -203,29 +199,29 @@ public class Kana extends JFrame implements ActionListener {
 		if(e.getSource() == startBtn) {
 			// Testataan onko ryhmiä valittuna
 			boolean anySelected = false;
-			ArrayList<Integer> selectedArray = new ArrayList<Integer>();
+			ArrayList<Integer> selectedArray = new ArrayList<Integer>(); // Alustetaan array
 			for(int i=0;i<charChoices.length;i++)
 				if(charChoices[i].isSelected()) {
-					selectedArray.add(i);
+					selectedArray.add(i); // Ja lisätään siihen valittujen checkboxien indeksit
 					anySelected = true;
 				}
 			
-			// Siirrytään pelinäkymään
 			if(anySelected) {
+				// Siirrytään pelinäkymään
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
+				previousResultText.setBackground(Color.WHITE);
 
-				Game peli = new Game(selectedArray);
-				peli.initializeGame();
+				peli.initializeGame(selectedArray);
 				peli.initializePool();
-				Character currentQuestion = peli.newQuestion();
-				showQuestion(currentQuestion);
+				ArrayList<Character> currentQuestionPool = peli.newQuestion();
+				showQuestion(currentQuestionPool);
 			}
 			else
 				JOptionPane.showMessageDialog(mainFrame, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
 		}
 		if(e.getSource() == menuBtn) {
-			// siirrytään päävalikkoon
+			// Siirrytään päävalikkoon
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "MENU");
 		}
@@ -237,15 +233,41 @@ public class Kana extends JFrame implements ActionListener {
 			for(int i=0;i<charChoices.length;i++)
 				charChoices[i].setSelected(false);
 		}
+		for(int i=0;i<4;i++) {
+			if(e.getSource() == optionBtn[i]) {
+				if(currentQuestion.getRomaji()==optionBtn[i].getText())
+					showResult(currentQuestion,true);
+				else
+					showResult(currentQuestion,false);
+				ArrayList<Character> currentQuestionPool = peli.newQuestion();
+				showQuestion(currentQuestionPool);
+			}			
+		}
 		
 		//JOptionPane.showMessageDialog(mainFrame, "action performed");
 	}
 	
-	public void showQuestion(Character currentQuestion) {
-		//currentQuestionText.setText("<html><font size=14>"+currentQuestion.getKana()+"</font></html>");
+	public void launchGame(boolean initialize) {
+		if(initialize==true) {
+			
+		}
+	}
+	
+	public void showQuestion(ArrayList<Character> currentQuestionPool) {
+		currentQuestion = currentQuestionPool.get(0);
 		currentQuestionText.setText("<html><span style=\"font-size: 50px;\"><b>"+currentQuestion.getKana()+"</b></span></html>");
+		Collections.shuffle(currentQuestionPool);
+		for(int i=0;i<4;i++)
+			optionBtn[i].setText(currentQuestionPool.get(i).getRomaji());
 	}
 
+	public void showResult(Character currentQuestion, boolean result) {
+		if(result==true)
+			previousResultText.setBackground(new Color(0,100,0));
+		else
+			previousResultText.setBackground(new Color(100,0,0));
+		previousResultText.setText(currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+	}
 	
 	public static void main(String args[]) {
 		Kana launcher = new Kana();

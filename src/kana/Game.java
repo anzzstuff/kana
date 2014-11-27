@@ -3,27 +3,27 @@ package kana;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Game extends Kana {
-	private static final long serialVersionUID = 1L;
+public class Game {
 	private ArrayList<Integer> selectedArray;
-	private CharacterPool pool;
 	private Character currentQuestionAnswer;
 	private Character previousQuestionAnswer;
+	private ArrayList<Character> allCharsList;
+	private ArrayList<Character> fullPool;
 	
-	public Game(ArrayList<Integer> par_selectedArray) {
-		selectedArray = par_selectedArray;	
+	public Game(ArrayList<Character> par_allCharsList) {
+		allCharsList=par_allCharsList;
 	}
 
-	public void initializeGame() {
+	public void initializeGame(ArrayList<Integer> par_selectedArray) {
+		selectedArray = par_selectedArray;
 	}
 	
 
 	public void initializePool() {
-		pool = new CharacterPool(allCharsList);
+		fullPool = new ArrayList<Character>();
 		
 		for(int i=0;i<allCharsList.size();i++) { // Loopataan läpi jokainen merkki
 			Character thisChar = allCharsList.get(i);
-			//System.out.println(thisChar.getKana() + " " +thisChar.getIndex());
 			
 			// Tarkistetaan onko merkin indeksi valittujen checkboxien rangeissa ja lisätään pooliin jos on
 			if((thisChar.getIndex()>=0 && thisChar.getIndex()<=4 && selectedArray.contains(0)) ||
@@ -37,16 +37,23 @@ public class Game extends Kana {
 				(thisChar.getIndex()>=38 && thisChar.getIndex()<=42 && selectedArray.contains(8)) || 
 				(thisChar.getIndex()>=43 && thisChar.getIndex()<=45 && selectedArray.contains(9)) 
 				)
-				pool.addToPool(thisChar);
+				fullPool.add(thisChar);
 
 		}
 	}
 	
-	public Character newQuestion() {
-		ArrayList<Character> currentQuestionPool = pool.getQuestionPool(previousQuestionAnswer, 4);
-		currentQuestionAnswer=currentQuestionPool.get(0);
-		Collections.shuffle(currentQuestionPool); // Kysymyspool ja oikea vastaus tallessa, shufflataan uudestaan
-		return currentQuestionAnswer;
-		//System.out.println(questionPool);
+	public ArrayList<Character> newQuestion() {
+		ArrayList<Character> tempPool = new ArrayList<Character>(fullPool);
+		tempPool.remove(previousQuestionAnswer);
+		Collections.shuffle(tempPool);
+		int k = tempPool.size();
+		tempPool.subList(4,k).clear();
+		
+		currentQuestionAnswer=tempPool.get(0);
+		previousQuestionAnswer=currentQuestionAnswer;
+		
+		return tempPool;
 	}
+	
+	
 }
