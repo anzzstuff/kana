@@ -19,7 +19,6 @@ public class Game {
 		selectedArray = par_selectedArray;
 	}
 	
-
 	public void initializePool() {
 		fullPool = new ArrayList<Character>();
 		
@@ -54,13 +53,11 @@ public class Game {
 		Collections.shuffle(tempPool);
 		int k = tempPool.size();
 		
-		tempPool.subList(4,k).clear();
+		tempPool.subList(4,k).clear(); // Leikataan poolista muut pois paitsi 4 ensimmäistä
 		
 		currentQuestionAnswer=tempPool.get(0);
 		previousQuestionAnswer=currentQuestionAnswer;
 		
 		return tempPool;
 	}
-	
-	
 }

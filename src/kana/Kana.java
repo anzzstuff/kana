@@ -235,7 +235,7 @@ public class Kana extends JFrame implements ActionListener {
 				charChoices[i].setSelected(false);
 		}
 		
-		for(int i=0;i<4;i++) {
+		for(int i=0;i<4;i++) { // Vastauspainikkeiden testaus
 			if(e.getSource() == optionBtn[i]) {
 				if(currentQuestion.getRomaji()==optionBtn[i].getText())
 					showResult(currentQuestion,true);
@@ -245,8 +245,6 @@ public class Kana extends JFrame implements ActionListener {
 				showQuestion(currentQuestionPool);
 			}			
 		}
-		
-		//JOptionPane.showMessageDialog(mainFrame, "action performed");
 	}
 	
 	public void launchGame(boolean initialize) {
@@ -264,6 +262,7 @@ public class Kana extends JFrame implements ActionListener {
 	}
 
 	public void showResult(Character currentQuestion, boolean result) {
+		currentQuestionText.requestFocus(); // Selkeyden vuoksi siirretään fokus kysymykselle josta voi siirtyä tabilla
 		if(result==true) {
 			previousResultText.setBackground(new Color(0,100,0));			
 			previousResultText.setText("Oikein!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
