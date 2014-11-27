@@ -1,6 +1,7 @@
 package kana;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CharacterPool {
 	private ArrayList<Character> allCharsList;
@@ -19,5 +20,14 @@ public class CharacterPool {
 	
 	public ArrayList<Character> getFullPool() {
 		return fullPool;
+	}
+	
+	public ArrayList<Character> getQuestionPool(Character previousQuestionAnswer, int poolSize) {
+		ArrayList<Character> tempPool = fullPool;
+		tempPool.remove(previousQuestionAnswer);
+		Collections.shuffle(tempPool);
+		int k = tempPool.size();
+		tempPool.subList(poolSize,k).clear();
+		return tempPool;
 	}
 }

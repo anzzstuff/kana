@@ -1,21 +1,20 @@
 package kana;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game extends Kana {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Integer> selectedArray;
 	private CharacterPool pool;
+	private Character currentQuestionAnswer;
+	private Character previousQuestionAnswer;
 	
 	public Game(ArrayList<Integer> par_selectedArray) {
-		selectedArray = par_selectedArray;
-		
-		initializeGame();
-		initializePool();
+		selectedArray = par_selectedArray;	
 	}
 
 	public void initializeGame() {
-		
 	}
 	
 
@@ -41,6 +40,13 @@ public class Game extends Kana {
 				pool.addToPool(thisChar);
 
 		}
-
+	}
+	
+	public Character newQuestion() {
+		ArrayList<Character> currentQuestionPool = pool.getQuestionPool(previousQuestionAnswer, 4);
+		currentQuestionAnswer=currentQuestionPool.get(0);
+		Collections.shuffle(currentQuestionPool); // Kysymyspool ja oikea vastaus tallessa, shufflataan uudestaan
+		return currentQuestionAnswer;
+		//System.out.println(questionPool);
 	}
 }
