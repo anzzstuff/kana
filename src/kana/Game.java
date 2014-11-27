@@ -2,6 +2,7 @@ package kana;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Game {
 	private ArrayList<Integer> selectedArray;
@@ -38,7 +39,12 @@ public class Game {
 				(thisChar.getIndex()>=43 && thisChar.getIndex()<=45 && selectedArray.contains(9)) 
 				)
 				fullPool.add(thisChar);
-
+			}
+		
+		while(fullPool.size()<5) { // Vaihtoehtoja vähemmän kuin 4, lisätään randomilla
+			Random rand = new Random();
+			int randomNum = rand.nextInt((45 - 0) + 1) + 0;
+			fullPool.add(allCharsList.get(randomNum));
 		}
 	}
 	
@@ -47,6 +53,7 @@ public class Game {
 		tempPool.remove(previousQuestionAnswer);
 		Collections.shuffle(tempPool);
 		int k = tempPool.size();
+		
 		tempPool.subList(4,k).clear();
 		
 		currentQuestionAnswer=tempPool.get(0);

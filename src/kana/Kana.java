@@ -220,6 +220,7 @@ public class Kana extends JFrame implements ActionListener {
 			else
 				JOptionPane.showMessageDialog(mainFrame, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
 		}
+		
 		if(e.getSource() == menuBtn) {
 			// Siirrytään päävalikkoon
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
@@ -233,6 +234,7 @@ public class Kana extends JFrame implements ActionListener {
 			for(int i=0;i<charChoices.length;i++)
 				charChoices[i].setSelected(false);
 		}
+		
 		for(int i=0;i<4;i++) {
 			if(e.getSource() == optionBtn[i]) {
 				if(currentQuestion.getRomaji()==optionBtn[i].getText())
@@ -262,11 +264,15 @@ public class Kana extends JFrame implements ActionListener {
 	}
 
 	public void showResult(Character currentQuestion, boolean result) {
-		if(result==true)
-			previousResultText.setBackground(new Color(0,100,0));
-		else
+		if(result==true) {
+			previousResultText.setBackground(new Color(0,100,0));			
+			previousResultText.setText("Oikein!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+		}
+		else {
 			previousResultText.setBackground(new Color(100,0,0));
-		previousResultText.setText(currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+			currentQuestion.setMistakes(currentQuestion.getMistakes()+1);
+			previousResultText.setText("Väärin!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+		}
 	}
 	
 	public static void main(String args[]) {
