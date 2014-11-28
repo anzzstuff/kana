@@ -97,9 +97,8 @@ public class Kana extends JFrame implements ActionListener {
 		// Pelinäkymän komponentit
 		// Edellinen kysymys
 		previousResultText = new JTextPane();
-		previousResultText.setText(" ");
 		previousResultText.setEditable(false);
-		previousResultText.setBackground(Color.WHITE);
+		previousResultText.setBackground(new Color(100,100,100));
 		previousResultText.setForeground(Color.WHITE);
 		previousResultText.setMargin(new Insets(10,10,10,10));
 		StyledDocument previousResultTextDoc = previousResultText.getStyledDocument();
@@ -210,7 +209,8 @@ public class Kana extends JFrame implements ActionListener {
 				// Siirrytään pelinäkymään
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
-				previousResultText.setBackground(Color.WHITE);
+				previousResultText.setBackground(new Color(100,100,100));
+				previousResultText.setText("Valitse vaihtoehto joka mielestäsi vastaa näytettyä merkkiä.");
 
 				peli.initializeGame(selectedArray);
 				peli.initializePool();
