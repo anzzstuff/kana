@@ -210,7 +210,7 @@ public class Kana extends JFrame implements ActionListener {
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
 				previousResultText.setBackground(new Color(100,100,100));
-				previousResultText.setText("Valitse vaihtoehto joka mielestäsi vastaa näytettyä merkkiä.");
+				previousResultText.setText("Valitse vaihtoehto joka mielestäsi tarkoittaa näytettyä merkkiä.");
 
 				peli.initializeGame(selectedArray);
 				peli.initializePool();
