@@ -1,30 +1,29 @@
 package kana;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
-public class Game extends Kana {
-	private static final long serialVersionUID = 1L;
+public class Game {
 	private ArrayList<Integer> selectedArray;
-	private CharacterPool pool;
+	private Character currentQuestionAnswer;
+	private Character previousQuestionAnswer;
+	private ArrayList<Character> allCharsList;
+	private ArrayList<Character> fullPool;
 	
-	public Game(ArrayList<Integer> par_selectedArray) {
+	public Game(ArrayList<Character> par_allCharsList) {
+		allCharsList=par_allCharsList;
+	}
+
+	public void initializeGame(ArrayList<Integer> par_selectedArray) {
 		selectedArray = par_selectedArray;
-		
-		initializeGame();
-		initializePool();
-	}
-
-	public void initializeGame() {
-		
 	}
 	
-
 	public void initializePool() {
-		pool = new CharacterPool(allCharsList);
+		fullPool = new ArrayList<Character>();
 		
 		for(int i=0;i<allCharsList.size();i++) { // Loopataan läpi jokainen merkki
 			Character thisChar = allCharsList.get(i);
-			//System.out.println(thisChar.getKana() + " " +thisChar.getIndex());
 			
 			// Tarkistetaan onko merkin indeksi valittujen checkboxien rangeissa ja lisätään pooliin jos on
 			if((thisChar.getIndex()>=0 && thisChar.getIndex()<=4 && selectedArray.contains(0)) ||
@@ -38,9 +37,27 @@ public class Game extends Kana {
 				(thisChar.getIndex()>=38 && thisChar.getIndex()<=42 && selectedArray.contains(8)) || 
 				(thisChar.getIndex()>=43 && thisChar.getIndex()<=45 && selectedArray.contains(9)) 
 				)
-				pool.addToPool(thisChar);
-
+				fullPool.add(thisChar);
+			}
+		
+		while(fullPool.size()<5) { // Vaihtoehtoja vähemmän kuin 4, lisätään randomilla
+			Random rand = new Random();
+			int randomNum = rand.nextInt((45 - 0) + 1) + 0;
+			fullPool.add(allCharsList.get(randomNum));
 		}
-
+	}
+	
+	public ArrayList<Character> newQuestion() {
+		ArrayList<Character> tempPool = new ArrayList<Character>(fullPool);
+		tempPool.remove(previousQuestionAnswer);
+		Collections.shuffle(tempPool);
+		int k = tempPool.size();
+		
+		tempPool.subList(4,k).clear(); // Leikataan poolista muut pois paitsi 4 ensimmäistä
+		
+		currentQuestionAnswer=tempPool.get(0);
+		previousQuestionAnswer=currentQuestionAnswer;
+		
+		return tempPool;
 	}
 }
