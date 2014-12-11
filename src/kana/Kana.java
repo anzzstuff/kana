@@ -1,10 +1,32 @@
 package kana;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.text.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Kana extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +49,7 @@ public class Kana extends JFrame implements ActionListener {
 	private Game peli;
 	private ArrayList<Character> allCharsList;
 	private JCheckBox[] charChoices = new JCheckBox[10];
+	int randomNum = 0;
 	
 	public Kana() {
 		super("Kana Quiz");
@@ -237,7 +260,8 @@ public class Kana extends JFrame implements ActionListener {
 		
 		for(int i=0;i<4;i++) { // Vastauspainikkeiden testaus
 			if(e.getSource() == optionBtn[i]) {
-				if(currentQuestion.getRomaji()==optionBtn[i].getText())
+				if((randomNum==0 && currentQuestion.getKana()==optionBtn[i].getText()) ||
+						(randomNum==1 && currentQuestion.getRomaji()==optionBtn[i].getText()))
 					showResult(currentQuestion,true);
 				else
 					showResult(currentQuestion,false);
@@ -254,11 +278,16 @@ public class Kana extends JFrame implements ActionListener {
 	}
 	
 	public void showQuestion(ArrayList<Character> currentQuestionPool) {
+		Random rand = new Random();
+		randomNum = rand.nextInt((1 - 0) + 1) + 0;
+		
 		currentQuestion = currentQuestionPool.get(0);
-		currentQuestionText.setText("<html><span style=\"font-size: 50px;\"><b>"+currentQuestion.getKana()+"</b></span></html>");
+		currentQuestionText.setText("<html><span style=\"font-size: 50px;\"><b>"+(randomNum==0?currentQuestion.getRomaji():currentQuestion.getKana())+"</b></span></html>");
 		Collections.shuffle(currentQuestionPool);
-		for(int i=0;i<4;i++)
-			optionBtn[i].setText(currentQuestionPool.get(i).getRomaji());
+		for(int i=0;i<4;i++) {		
+			optionBtn[i].setFont(new Font("Sans Serif", Font.BOLD, 30));
+			optionBtn[i].setText((randomNum==0?currentQuestionPool.get(i).getKana():currentQuestionPool.get(i).getRomaji()));
+		}
 	}
 
 	public void showResult(Character currentQuestion, boolean result) {
