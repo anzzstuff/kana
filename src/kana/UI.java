@@ -221,7 +221,6 @@ public class UI extends JFrame implements ActionListener {
 			ArrayList<Integer> selectedArray = new ArrayList<Integer>(); // Alustetaan array
 			for(int i=0;i<charChoices.length;i++)
 				if(charChoices[i].isSelected()) {
-					System.out.println(charChoices[i].getText());
 					selectedArray.add(i); // Ja lisätään siihen valittujen checkboxien indeksit
 					anySelected = true;
 				}
