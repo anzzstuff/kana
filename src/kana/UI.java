@@ -190,11 +190,15 @@ public class UI extends JFrame implements ActionListener {
 		Collections.shuffle(currentQuestionPool);
 		for(int i=0;i<4;i++) {
 			//todo: setvisible false jos currentQuestionPool.get(i):ssä ei oo mitään
-			if(randomNum==0) optionBtn[i].setFont(new Font("Sans Serif", Font.BOLD, 30));
-			else optionBtn[i].setFont(new Font("Sans Serif", Font.PLAIN, 28));
-			optionBtn[i].setText((randomNum==0?currentQuestionPool.get(i).getKana():currentQuestionPool.get(i).getRomaji()));
+			if(currentQuestionPool.size()>i) {
+				if(randomNum==0) optionBtn[i].setFont(new Font("Sans Serif", Font.BOLD, 30));
+				else optionBtn[i].setFont(new Font("Sans Serif", Font.PLAIN, 28));
+				optionBtn[i].setText((randomNum==0?currentQuestionPool.get(i).getKana():currentQuestionPool.get(i).getRomaji()));
+				optionBtn[i].setVisible(true);
+			}
+			else
+				optionBtn[i].setVisible(false);
 		}
-		//optionBtn[3].setVisible(false);
 	}
 	
 
