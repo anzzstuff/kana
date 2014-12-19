@@ -51,14 +51,13 @@ public class UI extends JFrame implements ActionListener {
 	private JCheckBox[] charChoices = new JCheckBox[10];
 	int randomNum = 0;
 	
-	public UI() {
+	public UI(Game par_peli) {
 		super("Kana Quiz");
+		peli = par_peli;
 		mainFrame = this;
 		
 		setSize(400,420);
 		setResizable(false);
-
-		peli = new Game();
 
 		// Päävalikon komponentit
 		JTextPane guideText = new JTextPane();

@@ -3,7 +3,8 @@ package kana;
 public class Kana {
 
 	public Kana() {
-		UI uiHandler = new UI();
+		Game peli = new Game();
+		UI uiHandler = new UI(peli);
 		uiHandler.setLocationRelativeTo(null); // Keskittää ikkunan näytölle
 		uiHandler.setVisible(true);
 	}

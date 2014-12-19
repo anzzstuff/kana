@@ -78,7 +78,6 @@ public class Game {
 	public ArrayList<Character> newQuestion() {
 		ArrayList<Character> tempPool = new ArrayList<Character>(fullPool);
 		do {
-			System.out.println("shuffle");
 			Collections.shuffle(tempPool);
 		} while(tempPool.get(0)==previousQuestionAnswer);
 		int k = tempPool.size();
