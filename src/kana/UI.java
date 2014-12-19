@@ -188,7 +188,6 @@ public class UI extends JFrame implements ActionListener {
 		currentQuestionText.setText("<html><span style=\"font-size: 50px;\"><b>"+(randomNum==0?currentQuestion.getRomaji():currentQuestion.getKana())+"</b></span></html>");
 		Collections.shuffle(currentQuestionPool);
 		for(int i=0;i<4;i++) {
-			//todo: setvisible false jos currentQuestionPool.get(i):ssä ei oo mitään
 			if(currentQuestionPool.size()>i) {
 				if(randomNum==0) optionBtn[i].setFont(new Font("Sans Serif", Font.BOLD, 30));
 				else optionBtn[i].setFont(new Font("Sans Serif", Font.PLAIN, 28));
