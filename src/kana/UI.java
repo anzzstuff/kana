@@ -31,16 +31,15 @@ import javax.swing.text.StyledDocument;
 public class UI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	private JFrame mainFrame;
 	// CardLayout paneelit
 	private JPanel masterPane;
 	private JPanel gamePane;
-	// Päävalikon komponentit
 	private JPanel menuPane;
+	// Päävalikon komponentit -- määritellään actionhandlerin takia
 	private JButton startBtn;
 	private JButton checkAllBtn;
 	private JButton checkNoneBtn;
-	// Pelinäkymän komponentit
+	// Pelinäkymän komponentit -- määritellään jotta muokattavissa
 	private JTextPane previousResultText;
 	private JTextPane currentQuestionText;
 	private JButton[] optionBtn = new JButton[4];
@@ -54,11 +53,31 @@ public class UI extends JFrame implements ActionListener {
 	public UI(Game par_peli) {
 		super("Kana Quiz");
 		peli = par_peli;
-		mainFrame = this;
 		
 		setSize(400,420);
 		setResizable(false);
 
+		initializeMenuUI();
+		initializeGameUI();
+
+		// masterPanessa on molemmat paneelit "game" ja "menu" joita vaihdellaan
+		masterPane = new JPanel(new CardLayout());
+		masterPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		masterPane.setBackground(Color.WHITE);	
+		masterPane.add(menuPane, "MENU");
+		masterPane.add(gamePane, "GAME");
+		this.getContentPane().add(masterPane);
+		
+		// Lopetus
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		
+	}
+
+	public void initializeMenuUI() {
 		// Päävalikon komponentit
 		JTextPane guideText = new JTextPane();
 		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi\nmyöhemmin palaamalla päävalikkoon.");
@@ -112,8 +131,10 @@ public class UI extends JFrame implements ActionListener {
 		checkBoxPaneOuter.add(checkAllPane);
 	
 		menuPane.add(checkBoxPaneOuter, BorderLayout.CENTER);	
-		menuPane.add(startBtn, BorderLayout.SOUTH);
-		
+		menuPane.add(startBtn, BorderLayout.SOUTH);	
+	}
+	
+	public void initializeGameUI() {
 		// Pelinäkymän komponentit
 		// Edellinen kysymys
 		previousResultText = new JTextPane();
@@ -161,25 +182,8 @@ public class UI extends JFrame implements ActionListener {
 		gamePane.add(previousResultText, BorderLayout.NORTH);
 		gamePane.add(questionPaneOuter, BorderLayout.CENTER);
 		gamePane.add(menuBtn, BorderLayout.SOUTH);	
-
-		// masterPanessa on molemmat paneelit "game" ja "menu" joita vaihdellaan
-		masterPane = new JPanel(new CardLayout());
-		masterPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		masterPane.setBackground(Color.WHITE);	
-		masterPane.add(menuPane, "MENU");
-		masterPane.add(gamePane, "GAME");
-		this.getContentPane().add(masterPane);
-		
-		// Lopetus
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		
 	}
-
-
+	
 	public void drawQuestion(ArrayList<Character> currentQuestionPool) {
 		Random rand = new Random();
 		randomNum = rand.nextInt((1 - 0) + 1) + 0; // Arvotaan "kummin päin" kysytään
@@ -199,7 +203,6 @@ public class UI extends JFrame implements ActionListener {
 		}
 	}
 	
-
 	public void drawResult(Character currentQuestion, boolean result) {
 		currentQuestionText.requestFocus(); // Selkeyden vuoksi siirretään fokus kysymykselle josta voi siirtyä tabilla
 		if(result==true) {
@@ -212,7 +215,6 @@ public class UI extends JFrame implements ActionListener {
 			previousResultText.setText("Väärin!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
 		}
 	}
-	
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == startBtn) {
@@ -236,7 +238,7 @@ public class UI extends JFrame implements ActionListener {
 				drawQuestion(peli.newQuestion());
 			}
 			else
-				JOptionPane.showMessageDialog(mainFrame, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
+				JOptionPane.showMessageDialog(this, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
 		}
 		
 		if(e.getSource() == menuBtn) {
@@ -265,5 +267,4 @@ public class UI extends JFrame implements ActionListener {
 		}
 	}
 	
-
 }
