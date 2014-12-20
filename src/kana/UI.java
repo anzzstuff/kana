@@ -35,7 +35,7 @@ public class UI extends JFrame implements ActionListener {
 	private JPanel masterPane;
 	private JPanel gamePane;
 	private JPanel menuPane;
-	// Päävalikon komponentit -- määritellään actionhandlerin takia
+	// Päävalikon komponentit -- määritellään koska actionhandler
 	private JButton startBtn;
 	private JButton checkAllBtn;
 	private JButton checkNoneBtn;
@@ -48,6 +48,7 @@ public class UI extends JFrame implements ActionListener {
 	private Character currentQuestion;
 	private Game peli;
 	private JCheckBox[] charChoices = new JCheckBox[10];
+	private Random rand;
 	int randomNum = 0;
 	
 	public UI(Game par_peli) {
@@ -57,6 +58,8 @@ public class UI extends JFrame implements ActionListener {
 		setSize(400,420);
 		setResizable(false);
 
+		rand = new Random();
+		
 		initializeMenuUI();
 		initializeGameUI();
 
@@ -185,8 +188,7 @@ public class UI extends JFrame implements ActionListener {
 	}
 	
 	public void drawQuestion(ArrayList<Character> currentQuestionPool) {
-		Random rand = new Random();
-		randomNum = rand.nextInt((1 - 0) + 1) + 0; // Arvotaan "kummin päin" kysytään
+		randomNum = rand.nextInt(2); // Arvotaan "kummin päin" kysytään. ((max - min) + 1) + min;
 		
 		currentQuestion = currentQuestionPool.get(0);
 		currentQuestionText.setText("<html><span style=\"font-size: 50px;\"><b>"+(randomNum==0?currentQuestion.getRomaji():currentQuestion.getKana())+"</b></span></html>");
