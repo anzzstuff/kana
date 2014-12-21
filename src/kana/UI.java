@@ -30,7 +30,6 @@ import javax.swing.text.StyledDocument;
 
 public class UI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-
 	// CardLayout paneelit
 	private JPanel masterPane;
 	private JPanel gamePane;
@@ -44,26 +43,26 @@ public class UI extends JFrame implements ActionListener {
 	private JTextPane currentQuestionText;
 	private JButton[] optionBtn = new JButton[4];
 	private JButton menuBtn;
-	
+	// Muita jutskia
 	private Character currentQuestion;
 	private Game peli;
-	private JCheckBox[] charChoices = new JCheckBox[10];
+	private JCheckBox[] charChoices = new JCheckBox[20];
 	private Random rand;
-	int randomNum = 0;
+	private int randomNum = 0;
 	
 	public UI(Game par_peli) {
 		super("Kana Quiz");
 		peli = par_peli;
 		
-		setSize(400,420);
+		setSize(400,435);
 		setResizable(false);
 
-		rand = new Random();
+		rand = new Random(); // Globaali randomoija
 		
 		initializeMenuUI();
 		initializeGameUI();
 
-		// masterPanessa on molemmat paneelit "game" ja "menu" joita vaihdellaan
+		// masterPanessa on gamePane ja menuPane joita vaihdellaan
 		masterPane = new JPanel(new CardLayout());
 		masterPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		masterPane.setBackground(Color.WHITE);	
@@ -71,7 +70,7 @@ public class UI extends JFrame implements ActionListener {
 		masterPane.add(gamePane, "GAME");
 		this.getContentPane().add(masterPane);
 		
-		// Lopetus
+		// Lopetus handleri
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -82,16 +81,17 @@ public class UI extends JFrame implements ActionListener {
 
 	public void initializeMenuUI() {
 		// Päävalikon komponentit
-		JTextPane guideText = new JTextPane();
-		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi\nmyöhemmin palaamalla päävalikkoon.");
-		guideText.setOpaque(false);
-		guideText.setEditable(false);
-
-		startBtn = new JButton(" Aloita >");
-		startBtn.addActionListener(this);
-		
 		menuPane = new JPanel(new BorderLayout());
 		menuPane.setOpaque(false);
+
+		JTextPane guideText = new JTextPane();
+		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi\nmyöhemmin palaamalla päävalikkoon.");
+		//guideText.setOpaque(false);
+		guideText.setEditable(false);
+		guideText.setBackground(new Color(0,106,102));
+		guideText.setForeground(Color.WHITE);
+		guideText.setMargin(new Insets(10,10,10,10));
+		
 		menuPane.add(guideText, BorderLayout.NORTH);
 		
 		JPanel checkBoxPaneOuter = new JPanel();
@@ -99,10 +99,10 @@ public class UI extends JFrame implements ActionListener {
 		
 		JPanel checkBoxPane = new JPanel();
 		checkBoxPane.setLayout(new BoxLayout(checkBoxPane, BoxLayout.PAGE_AXIS));
-		checkBoxPane.setPreferredSize(new Dimension(375,260));
-		checkBoxPane.setBackground(new Color(230,230,230));
+		//checkBoxPane.setPreferredSize(new Dimension(375,260));
+		checkBoxPane.setBackground(new Color(240,240,240));
 		checkBoxPane.add(Box.createRigidArea(new Dimension(7, 9)));
-
+		
 		charChoices[0] = new JCheckBox("a, i, u, e, o");
 		charChoices[1] = new JCheckBox("ka, ki, ku, ke, ko");
 		charChoices[2] = new JCheckBox("sa, shi, su, se, so");
@@ -113,27 +113,61 @@ public class UI extends JFrame implements ActionListener {
 		charChoices[7] = new JCheckBox("ya, yu, ro");
 		charChoices[8] = new JCheckBox("ra, ri, ru, re, ro");
 		charChoices[9] = new JCheckBox("wa, wo, n");
-		for(int i=0;i<charChoices.length;i++) {
+		for(int i=0;i<10;i++) {
 			charChoices[i].setOpaque(false);
+			charChoices[i].setFont(new Font("Dialog", Font.PLAIN, 12));
 			checkBoxPane.add(charChoices[i]);
 		}
 		checkBoxPane.setAlignmentX(LEFT_ALIGNMENT);
+
+		JPanel checkBoxPane2 = new JPanel();
+		checkBoxPane2.setLayout(new BoxLayout(checkBoxPane2, BoxLayout.PAGE_AXIS));
+		//checkBoxPane.setPreferredSize(new Dimension(375,260));
+		checkBoxPane2.setBackground(new Color(240,240,240));
+		checkBoxPane2.add(Box.createRigidArea(new Dimension(7, 9)));
+		
+		charChoices[10] = new JCheckBox("a, i, u, e, o");
+		charChoices[11] = new JCheckBox("ka, ki, ku, ke, ko");
+		charChoices[12] = new JCheckBox("sa, shi, su, se, so");
+		charChoices[13] = new JCheckBox("ta, chi, tsu, te, to");
+		charChoices[14] = new JCheckBox("na, ni, nu, ne, no");
+		charChoices[15] = new JCheckBox("ha, hi, fu, he, ho");
+		charChoices[16] = new JCheckBox("ma, mi, mu, me, mo");
+		charChoices[17] = new JCheckBox("ya, yu, ro");
+		charChoices[18] = new JCheckBox("ra, ri, ru, re, ro");
+		charChoices[19] = new JCheckBox("wa, wo, n");
+		for(int i=10;i<charChoices.length;i++) {
+			charChoices[i].setOpaque(false);
+			charChoices[i].setFont(new Font("Dialog", Font.PLAIN, 12));
+			checkBoxPane2.add(charChoices[i]);
+		}
+		checkBoxPane2.setAlignmentX(LEFT_ALIGNMENT);
+
+		
 		checkBoxPaneOuter.add(checkBoxPane);
+		checkBoxPaneOuter.add(checkBoxPane2);
+
 		
 		JPanel checkAllPane = new JPanel(new FlowLayout());
 
 		checkAllBtn = new JButton("Valitse kaikki");
 		checkAllBtn.addActionListener(this);
+		checkAllBtn.setPreferredSize(new Dimension(60,30));
 
 		checkNoneBtn = new JButton("Poista valinnat");
 		checkNoneBtn.addActionListener(this);
+		checkNoneBtn.setPreferredSize(new Dimension(60,30));
 
 		checkAllPane.add(checkAllBtn);
 		checkAllPane.add(checkNoneBtn);
 		checkAllPane.setOpaque(false);
-		checkBoxPaneOuter.add(checkAllPane);
+		checkBoxPane.add(checkAllPane);
 	
 		menuPane.add(checkBoxPaneOuter, BorderLayout.CENTER);	
+
+		startBtn = new JButton(" Aloita >");
+		startBtn.addActionListener(this);
+		
 		menuPane.add(startBtn, BorderLayout.SOUTH);	
 	}
 	
@@ -142,7 +176,6 @@ public class UI extends JFrame implements ActionListener {
 		// Edellinen kysymys
 		previousResultText = new JTextPane();
 		previousResultText.setEditable(false);
-		previousResultText.setBackground(new Color(100,100,100));
 		previousResultText.setForeground(Color.WHITE);
 		previousResultText.setMargin(new Insets(10,10,10,10));
 		StyledDocument previousResultTextDoc = previousResultText.getStyledDocument();
@@ -195,10 +228,11 @@ public class UI extends JFrame implements ActionListener {
 		Collections.shuffle(currentQuestionPool);
 		for(int i=0;i<4;i++) {
 			if(currentQuestionPool.size()>i) {
-				if(randomNum==0) optionBtn[i].setFont(new Font("Sans Serif", Font.BOLD, 30));
-				else optionBtn[i].setFont(new Font("Sans Serif", Font.PLAIN, 28));
+				if(randomNum==0) optionBtn[i].setFont(new Font("Serif", Font.BOLD, 30));
+				else optionBtn[i].setFont(new Font("Dialog", Font.PLAIN, 28));
 				optionBtn[i].setText((randomNum==0?currentQuestionPool.get(i).getKana():currentQuestionPool.get(i).getRomaji()));
 				optionBtn[i].setVisible(true);
+				optionBtn[i].setPreferredSize(new Dimension(72, 57));
 			}
 			else
 				optionBtn[i].setVisible(false);
@@ -233,7 +267,7 @@ public class UI extends JFrame implements ActionListener {
 				// Siirrytään pelinäkymään
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
-				previousResultText.setBackground(new Color(100,100,100));
+				previousResultText.setBackground(new Color(0,106,102)); // 150,138,29
 				previousResultText.setText("Valitse vaihtoehto joka mielestäsi tarkoittaa näytettyä merkkiä.");
 
 				peli.initializeGame(selectedArray);
