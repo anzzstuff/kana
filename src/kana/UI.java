@@ -86,7 +86,6 @@ public class UI extends JFrame implements ActionListener {
 
 		JTextPane guideText = new JTextPane();
 		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi\nmyöhemmin palaamalla päävalikkoon.");
-		//guideText.setOpaque(false);
 		guideText.setEditable(false);
 		guideText.setBackground(new Color(0,106,102));
 		guideText.setForeground(Color.WHITE);
@@ -102,23 +101,6 @@ public class UI extends JFrame implements ActionListener {
 		//checkBoxPane.setPreferredSize(new Dimension(375,260));
 		checkBoxPane.setBackground(new Color(240,240,240));
 		checkBoxPane.add(Box.createRigidArea(new Dimension(7, 9)));
-		
-		charChoices[0] = new JCheckBox("a, i, u, e, o");
-		charChoices[1] = new JCheckBox("ka, ki, ku, ke, ko");
-		charChoices[2] = new JCheckBox("sa, shi, su, se, so");
-		charChoices[3] = new JCheckBox("ta, chi, tsu, te, to");
-		charChoices[4] = new JCheckBox("na, ni, nu, ne, no");
-		charChoices[5] = new JCheckBox("ha, hi, fu, he, ho");
-		charChoices[6] = new JCheckBox("ma, mi, mu, me, mo");
-		charChoices[7] = new JCheckBox("ya, yu, ro");
-		charChoices[8] = new JCheckBox("ra, ri, ru, re, ro");
-		charChoices[9] = new JCheckBox("wa, wo, n");
-		for(int i=0;i<10;i++) {
-			charChoices[i].setOpaque(false);
-			charChoices[i].setFont(new Font("Dialog", Font.PLAIN, 12));
-			checkBoxPane.add(charChoices[i]);
-		}
-		checkBoxPane.setAlignmentX(LEFT_ALIGNMENT);
 
 		JPanel checkBoxPane2 = new JPanel();
 		checkBoxPane2.setLayout(new BoxLayout(checkBoxPane2, BoxLayout.PAGE_AXIS));
@@ -126,27 +108,34 @@ public class UI extends JFrame implements ActionListener {
 		checkBoxPane2.setBackground(new Color(240,240,240));
 		checkBoxPane2.add(Box.createRigidArea(new Dimension(7, 9)));
 		
-		charChoices[10] = new JCheckBox("a, i, u, e, o");
-		charChoices[11] = new JCheckBox("ka, ki, ku, ke, ko");
-		charChoices[12] = new JCheckBox("sa, shi, su, se, so");
-		charChoices[13] = new JCheckBox("ta, chi, tsu, te, to");
-		charChoices[14] = new JCheckBox("na, ni, nu, ne, no");
-		charChoices[15] = new JCheckBox("ha, hi, fu, he, ho");
-		charChoices[16] = new JCheckBox("ma, mi, mu, me, mo");
-		charChoices[17] = new JCheckBox("ya, yu, ro");
-		charChoices[18] = new JCheckBox("ra, ri, ru, re, ro");
-		charChoices[19] = new JCheckBox("wa, wo, n");
-		for(int i=10;i<charChoices.length;i++) {
+		String[] romajiArray = {
+			"a, i, u, e, o",
+			"ka, ki, ku, ke, ko",
+			"sa, shi, su, se, so",
+			"ta, chi, tsu, te, to",
+			"na, ni, nu, ne, no",
+			"ha, hi, fu, he, ho",
+			"ma, mi, mu, me, mo",
+			"ya, yu, ro",
+			"ra, ri, ru, re, ro",
+			"wa, wo, n"
+		};
+		
+		for(int i=0;i<romajiArray.length;i++) {
+			charChoices[i] = new JCheckBox(romajiArray[i]);
 			charChoices[i].setOpaque(false);
 			charChoices[i].setFont(new Font("Dialog", Font.PLAIN, 12));
-			checkBoxPane2.add(charChoices[i]);
+			checkBoxPane.add(charChoices[i]);
+			charChoices[i+10] = new JCheckBox(romajiArray[i]);
+			charChoices[i+10].setOpaque(false);
+			charChoices[i+10].setFont(new Font("Dialog", Font.PLAIN, 12));
+			checkBoxPane2.add(charChoices[i+10]);
 		}
+		checkBoxPane.setAlignmentX(LEFT_ALIGNMENT);
 		checkBoxPane2.setAlignmentX(LEFT_ALIGNMENT);
-
 		
 		checkBoxPaneOuter.add(checkBoxPane);
 		checkBoxPaneOuter.add(checkBoxPane2);
-
 		
 		JPanel checkAllPane = new JPanel(new FlowLayout());
 
