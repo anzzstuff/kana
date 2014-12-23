@@ -75,7 +75,7 @@ public class UI extends JFrame implements ActionListener {
 		menuPane.setOpaque(true);
 		
 		JTextPane guideText = new JTextPane();
-		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi myöhemmin\npalaamalla päävalikkoon.");
+		guideText.setText("Please choose which groups of characters you want to be studying. \nYou can change these later by returning to menu.");
 		guideText.setEditable(false);
 		guideText.setBackground(new Color(0,106,102));
 		guideText.setForeground(Color.WHITE);
@@ -114,33 +114,33 @@ public class UI extends JFrame implements ActionListener {
 			checkBoxPane2.add(charChoices[i+11], "span 2, wrap");
 		}
 
-		checkAllBtnHira = new JButton("Valitse kaikki");
+		checkAllBtnHira = new JButton("Check all");
 		checkAllBtnHira.addActionListener(this);
 		checkAllBtnHira.setMargin(new Insets(2,4,2,4));
 		checkAllBtnHira.setFont(checkAllBtnHira.getFont().deriveFont(Font.PLAIN));
 
-		checkNoneBtnHira = new JButton("Poista valinnat");
+		checkNoneBtnHira = new JButton("Uncheck all");
 		checkNoneBtnHira.addActionListener(this);
 		checkNoneBtnHira.setMargin(new Insets(2,4,2,4));
 		checkNoneBtnHira.setFont(checkAllBtnHira.getFont().deriveFont(Font.PLAIN));
 
-		checkBoxPane.add(checkAllBtnHira, "left, gaptop 10");
-		checkBoxPane.add(checkNoneBtnHira, "right, gaptop 10");
+		checkBoxPane.add(checkAllBtnHira, "gaptop 10");
+		checkBoxPane.add(checkNoneBtnHira, "gapleft 6, gaptop 10");
 
-		checkAllBtnKata = new JButton("Valitse kaikki");
+		checkAllBtnKata = new JButton("Check all");
 		checkAllBtnKata.addActionListener(this);
 		checkAllBtnKata.setMargin(new Insets(2,4,2,4));
 		checkAllBtnKata.setFont(checkAllBtnKata.getFont().deriveFont(Font.PLAIN));
 
-		checkNoneBtnKata = new JButton("Poista valinnat");
+		checkNoneBtnKata = new JButton("Uncheck all");
 		checkNoneBtnKata.addActionListener(this);
 		checkNoneBtnKata.setMargin(new Insets(2,4,2,4));
 		checkNoneBtnKata.setFont(checkNoneBtnKata.getFont().deriveFont(Font.PLAIN));
 	
-		checkBoxPane2.add(checkAllBtnKata, "left, gaptop 10");
-		checkBoxPane2.add(checkNoneBtnKata, "right, gaptop 10");
+		checkBoxPane2.add(checkAllBtnKata, "gaptop 10");
+		checkBoxPane2.add(checkNoneBtnKata, "gapleft 6, gaptop 10");
 
-		startBtn = new JButton(" Aloita »");
+		startBtn = new JButton(" Start »");
 		startBtn.addActionListener(this);
 
 		menuPane.add(guideText, "dock north");
@@ -209,7 +209,7 @@ public class UI extends JFrame implements ActionListener {
 		for(int i=0;i<4;i++) {
 			if(currentQuestionPool.size()>i) {
 				if(randomNum==0) optionBtn[i].setFont(new Font("Serif", Font.BOLD, 30));
-				else optionBtn[i].setFont(new Font("Dialog", Font.PLAIN, 28));
+				else optionBtn[i].setFont(new Font("Dialog", Font.PLAIN, 26));
 				optionBtn[i].setText((randomNum==0?currentQuestionPool.get(i).getKana():currentQuestionPool.get(i).getRomaji()));
 				optionBtn[i].setVisible(true);
 				optionBtn[i].setPreferredSize(new Dimension(72, 57));
@@ -223,12 +223,12 @@ public class UI extends JFrame implements ActionListener {
 		currentQuestionText.requestFocus(); // Selkeyden vuoksi siirretään fokus kysymykselle josta voi siirtyä tabilla
 		if(result==true) {
 			previousResultText.setBackground(new Color(0,100,0));			
-			previousResultText.setText("Oikein!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+			previousResultText.setText("Good!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
 		}
 		else {
 			previousResultText.setBackground(new Color(100,0,0));
 			currentQuestion.setMistakes(currentQuestion.getMistakes()+1);
-			previousResultText.setText("Väärin!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
+			previousResultText.setText("Wrong!     " + currentQuestion.getKana()+" = "+currentQuestion.getRomaji());
 		}
 	}
 	
@@ -249,13 +249,13 @@ public class UI extends JFrame implements ActionListener {
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
 				previousResultText.setBackground(new Color(0,106,102)); // 150,138,29
-				previousResultText.setText("Valitse vaihtoehto joka mielestäsi tarkoittaa näytettyä merkkiä.");
+				previousResultText.setText("Select the option that you think corresponds the shown character.");
 
 				peli.initializeGame(selectedArray);
 				drawQuestion(peli.newQuestion());
 			}
 			else
-				JOptionPane.showMessageDialog(this, "Sinun täytyy valita jokin ryhmä jotta voit aloittaa pelin.");
+				JOptionPane.showMessageDialog(this, "You must choose a group before you can start the game.");
 		}
 		
 		if(e.getSource() == menuBtn) {
