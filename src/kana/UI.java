@@ -9,24 +9,23 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import net.miginfocom.swing.MigLayout;
 
 public class UI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -36,8 +35,10 @@ public class UI extends JFrame implements ActionListener {
 	private JPanel menuPane;
 	// Päävalikon komponentit -- määritellään koska actionhandler
 	private JButton startBtn;
-	private JButton checkAllBtn;
-	private JButton checkNoneBtn;
+	private JButton checkAllBtnHira;
+	private JButton checkNoneBtnHira;
+	private JButton checkAllBtnKata;
+	private JButton checkNoneBtnKata;
 	// Pelinäkymän komponentit -- määritellään jotta muokattavissa
 	private JTextPane previousResultText;
 	private JTextPane currentQuestionText;
@@ -46,17 +47,13 @@ public class UI extends JFrame implements ActionListener {
 	// Muita jutskia
 	private Character currentQuestion;
 	private Game peli;
-	private JCheckBox[] charChoices = new JCheckBox[20];
+	private JCheckBox[] charChoices = new JCheckBox[22];
 	private Random rand;
 	private int randomNum = 0;
 	
 	public UI(Game par_peli) {
 		super("Kana Quiz");
 		peli = par_peli;
-		
-		setSize(400,435);
-		setResizable(false);
-
 		rand = new Random(); // Globaali randomoija
 		
 		initializeMenuUI();
@@ -64,50 +61,34 @@ public class UI extends JFrame implements ActionListener {
 
 		// masterPanessa on gamePane ja menuPane joita vaihdellaan
 		masterPane = new JPanel(new CardLayout());
-		masterPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		masterPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		masterPane.setBackground(Color.WHITE);	
 		masterPane.add(menuPane, "MENU");
 		masterPane.add(gamePane, "GAME");
 		this.getContentPane().add(masterPane);
-		
-		// Lopetus handleri
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		
 	}
 
 	public void initializeMenuUI() {
 		// Päävalikon komponentit
-		menuPane = new JPanel(new BorderLayout());
-		menuPane.setOpaque(false);
-
+		menuPane = new JPanel(new MigLayout());
+		menuPane.setBackground(new Color(230,230,230));
+		menuPane.setOpaque(true);
+		
 		JTextPane guideText = new JTextPane();
-		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi\nmyöhemmin palaamalla päävalikkoon.");
+		guideText.setText("Valitse merkit joita tahdot opiskella. Voit muuttaa valintojasi myöhemmin\npalaamalla päävalikkoon.");
 		guideText.setEditable(false);
 		guideText.setBackground(new Color(0,106,102));
 		guideText.setForeground(Color.WHITE);
-		guideText.setMargin(new Insets(10,10,10,10));
-		
-		menuPane.add(guideText, BorderLayout.NORTH);
-		
-		JPanel checkBoxPaneOuter = new JPanel();
-		checkBoxPaneOuter.setOpaque(false);
-		
-		JPanel checkBoxPane = new JPanel();
-		checkBoxPane.setLayout(new BoxLayout(checkBoxPane, BoxLayout.PAGE_AXIS));
-		//checkBoxPane.setPreferredSize(new Dimension(375,260));
-		checkBoxPane.setBackground(new Color(240,240,240));
-		checkBoxPane.add(Box.createRigidArea(new Dimension(7, 9)));
-
-		JPanel checkBoxPane2 = new JPanel();
-		checkBoxPane2.setLayout(new BoxLayout(checkBoxPane2, BoxLayout.PAGE_AXIS));
-		//checkBoxPane.setPreferredSize(new Dimension(375,260));
-		checkBoxPane2.setBackground(new Color(240,240,240));
-		checkBoxPane2.add(Box.createRigidArea(new Dimension(7, 9)));
-		
+		guideText.setMargin(new Insets(8,8,8,8));
+				
+		JPanel checkBoxPane = new JPanel(new MigLayout("gap rel 0"));
+		JPanel checkBoxPane2 = new JPanel(new MigLayout("gap rel 0"));
+		checkBoxPane.setBorder(BorderFactory.createMatteBorder(6,0,6,3, Color.WHITE));
+		checkBoxPane2.setBorder(BorderFactory.createMatteBorder(6,3,6,0, Color.WHITE));
+		checkBoxPane.setOpaque(false);
+		checkBoxPane2.setOpaque(false);
+		checkBoxPane.add(new JLabel("Hiragana"), "center, span");
+		checkBoxPane2.add(new JLabel("Katakana"), "center, span");
 		String[] romajiArray = {
 			"a, i, u, e, o",
 			"ka, ki, ku, ke, ko",
@@ -118,46 +99,56 @@ public class UI extends JFrame implements ActionListener {
 			"ma, mi, mu, me, mo",
 			"ya, yu, ro",
 			"ra, ri, ru, re, ro",
-			"wa, wo, n"
+			"wa, wo, n",
+			"ga, za, ba, kya, sha... (58 chars)"
 		};
 		
 		for(int i=0;i<romajiArray.length;i++) {
 			charChoices[i] = new JCheckBox(romajiArray[i]);
 			charChoices[i].setOpaque(false);
 			charChoices[i].setFont(new Font("Dialog", Font.PLAIN, 12));
-			checkBoxPane.add(charChoices[i]);
-			charChoices[i+10] = new JCheckBox(romajiArray[i]);
-			charChoices[i+10].setOpaque(false);
-			charChoices[i+10].setFont(new Font("Dialog", Font.PLAIN, 12));
-			checkBoxPane2.add(charChoices[i+10]);
+			checkBoxPane.add(charChoices[i], "span 2, wrap");
+			charChoices[i+11] = new JCheckBox(romajiArray[i]);
+			charChoices[i+11].setOpaque(false);
+			charChoices[i+11].setFont(new Font("Dialog", Font.PLAIN, 12));
+			checkBoxPane2.add(charChoices[i+11], "span 2, wrap");
 		}
-		checkBoxPane.setAlignmentX(LEFT_ALIGNMENT);
-		checkBoxPane2.setAlignmentX(LEFT_ALIGNMENT);
-		
-		checkBoxPaneOuter.add(checkBoxPane);
-		checkBoxPaneOuter.add(checkBoxPane2);
-		
-		JPanel checkAllPane = new JPanel(new FlowLayout());
 
-		checkAllBtn = new JButton("Valitse kaikki");
-		checkAllBtn.addActionListener(this);
-		checkAllBtn.setPreferredSize(new Dimension(60,30));
+		checkAllBtnHira = new JButton("Valitse kaikki");
+		checkAllBtnHira.addActionListener(this);
+		checkAllBtnHira.setMargin(new Insets(2,4,2,4));
+		checkAllBtnHira.setFont(checkAllBtnHira.getFont().deriveFont(Font.PLAIN));
 
-		checkNoneBtn = new JButton("Poista valinnat");
-		checkNoneBtn.addActionListener(this);
-		checkNoneBtn.setPreferredSize(new Dimension(60,30));
+		checkNoneBtnHira = new JButton("Poista valinnat");
+		checkNoneBtnHira.addActionListener(this);
+		checkNoneBtnHira.setMargin(new Insets(2,4,2,4));
+		checkNoneBtnHira.setFont(checkAllBtnHira.getFont().deriveFont(Font.PLAIN));
 
-		checkAllPane.add(checkAllBtn);
-		checkAllPane.add(checkNoneBtn);
-		checkAllPane.setOpaque(false);
-		checkBoxPane.add(checkAllPane);
+		checkBoxPane.add(checkAllBtnHira, "left, gaptop 10");
+		checkBoxPane.add(checkNoneBtnHira, "right, gaptop 10");
+
+		checkAllBtnKata = new JButton("Valitse kaikki");
+		checkAllBtnKata.addActionListener(this);
+		checkAllBtnKata.setMargin(new Insets(2,4,2,4));
+		checkAllBtnKata.setFont(checkAllBtnKata.getFont().deriveFont(Font.PLAIN));
+
+		checkNoneBtnKata = new JButton("Poista valinnat");
+		checkNoneBtnKata.addActionListener(this);
+		checkNoneBtnKata.setMargin(new Insets(2,4,2,4));
+		checkNoneBtnKata.setFont(checkNoneBtnKata.getFont().deriveFont(Font.PLAIN));
 	
-		menuPane.add(checkBoxPaneOuter, BorderLayout.CENTER);	
+		checkBoxPane2.add(checkAllBtnKata, "left, gaptop 10");
+		checkBoxPane2.add(checkNoneBtnKata, "right, gaptop 10");
 
-		startBtn = new JButton(" Aloita >");
+		startBtn = new JButton(" Aloita »");
 		startBtn.addActionListener(this);
+
+		menuPane.add(guideText, "dock north");
+		menuPane.add(startBtn, "dock south");
+		menuPane.add(checkBoxPane, "dock west");
+		menuPane.add(checkBoxPane2, "dock east");
+
 		
-		menuPane.add(startBtn, BorderLayout.SOUTH);	
 	}
 	
 	public void initializeGameUI() {
@@ -198,7 +189,7 @@ public class UI extends JFrame implements ActionListener {
 		questionPaneOuter.add(answerPane, BorderLayout.CENTER);
 
 		// Paluunappi
-		menuBtn = new JButton("< Takaisin päävalikkoon  ");
+		menuBtn = new JButton("« Takaisin päävalikkoon  ");
 		menuBtn.addActionListener(this);
 		
 		// Koko paneeli
@@ -241,6 +232,7 @@ public class UI extends JFrame implements ActionListener {
 		}
 	}
 	
+
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == startBtn) {
 			// Testataan onko ryhmiä valittuna
@@ -271,12 +263,20 @@ public class UI extends JFrame implements ActionListener {
 			CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 			cardLayout.show(masterPane, "MENU");
 		}
-		if(e.getSource() == checkAllBtn) {
-			for(int i=0;i<charChoices.length;i++)
+		if(e.getSource() == checkAllBtnHira) {
+			for(int i=0;i<11;i++)
 				charChoices[i].setSelected(true);
 		}
-		if(e.getSource() == checkNoneBtn) {
-			for(int i=0;i<charChoices.length;i++)
+		if(e.getSource() == checkNoneBtnHira) {
+			for(int i=0;i<11;i++)
+				charChoices[i].setSelected(false);
+		}
+		if(e.getSource() == checkAllBtnKata) {
+			for(int i=11;i<22;i++)
+				charChoices[i].setSelected(true);
+		}
+		if(e.getSource() == checkNoneBtnKata) {
+			for(int i=11;i<22;i++)
 				charChoices[i].setSelected(false);
 		}
 		
