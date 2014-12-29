@@ -75,7 +75,7 @@ public class UI extends JFrame implements ActionListener {
 		menuPane.setOpaque(true);
 		
 		JTextPane guideText = new JTextPane();
-		guideText.setText("Please choose which groups of characters you want to be studying. \nYou can change these later by returning to menu.");
+		guideText.setText("Please choose which groups of characters you'd like to study. \nYou can change these later by returning to menu.");
 		guideText.setEditable(false);
 		guideText.setBackground(new Color(0,106,102));
 		guideText.setForeground(Color.WHITE);
@@ -189,7 +189,7 @@ public class UI extends JFrame implements ActionListener {
 		questionPaneOuter.add(answerPane, BorderLayout.CENTER);
 
 		// Paluunappi
-		menuBtn = new JButton("« Takaisin päävalikkoon  ");
+		menuBtn = new JButton("« Back to menu  ");
 		menuBtn.addActionListener(this);
 		
 		// Koko paneeli
@@ -249,7 +249,7 @@ public class UI extends JFrame implements ActionListener {
 				CardLayout cardLayout = (CardLayout)(masterPane.getLayout());
 				cardLayout.show(masterPane, "GAME");
 				previousResultText.setBackground(new Color(0,106,102)); // 150,138,29
-				previousResultText.setText("Select the option that you think corresponds the shown character.");
+				previousResultText.setText("Select the option that you think means the shown character.");
 
 				peli.initializeGame(selectedArray);
 				drawQuestion(peli.newQuestion());
